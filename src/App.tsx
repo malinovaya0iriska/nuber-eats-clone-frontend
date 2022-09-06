@@ -1,9 +1,9 @@
-import { ReactElement } from 'react';
-
 import logo from './logo.svg';
-import './App.css';
 
-const App = (): ReactElement => {
+import './App.css';
+import { ReturnComponentType } from 'types/ReturnComponentType';
+
+const App = (): ReturnComponentType => {
   return (
     <div className="App">
       <header className="App-header">
