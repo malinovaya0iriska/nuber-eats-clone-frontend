@@ -1,0 +1,14 @@
+
+@tailwind base;
+@tailwind components;
+
+
+
+.container {
+  @apply max-w-screen-2xl mx-auto;
+}
+
+
+
+
+@tailwind utilities;

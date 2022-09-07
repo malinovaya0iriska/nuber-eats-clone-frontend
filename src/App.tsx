@@ -1,27 +1,13 @@
-import logo from './logo.svg';
+import { useReactiveVar } from '@apollo/client';
 
-import './App.css';
+import { isLoggedInVar } from 'apollo';
+import { LoggedInRouter, LoggedOutRouter } from 'routes';
 import { ReturnComponentType } from 'types/ReturnComponentType';
 
-const App = (): ReturnComponentType => {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-};
+export const App = (): ReturnComponentType => {
+  const isLoggedIn = useReactiveVar(isLoggedInVar);
 
-export default App;
+  console.log('isLoggedIn', isLoggedIn);
+
+  return isLoggedIn ? <LoggedInRouter /> : <LoggedOutRouter />;
+};
