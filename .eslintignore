@@ -2,3 +2,4 @@
 *.scss
 *.json
 *.d.ts
+schema.ts

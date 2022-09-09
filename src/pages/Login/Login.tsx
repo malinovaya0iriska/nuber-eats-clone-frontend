@@ -19,26 +19,42 @@ const LOGIN_MUTATION = gql`
 export const Login = (): ReturnComponentType => {
   const {
     register,
-
-    watch,
+    getValues,
     formState: { errors },
     handleSubmit,
   } = useForm<ILoginForm>();
 
-  const [loginMutation] = useMutation<LoginMutation, LoginMutationVariables>(
-    LOGIN_MUTATION,
-    {
-      variables: {
-        loginInput: {
-          email: watch('email'),
-          password: watch('password'),
-        },
-      },
-    },
-  );
+  const onCompleted = (data: LoginMutation): void => {
+    const {
+      login: { ok, token },
+    } = data;
+
+    if (ok) {
+      console.log(token);
+    }
+  };
+
+  const [loginMutation, { loading, data: loginMutationResult }] = useMutation<
+    LoginMutation,
+    LoginMutationVariables
+  >(LOGIN_MUTATION, {
+    onCompleted,
+    onError: () => null,
+  });
 
   const onSubmit = (): void => {
-    loginMutation();
+    if (!loading) {
+      const { email, password } = getValues();
+
+      loginMutation({
+        variables: {
+          loginInput: {
+            email,
+            password,
+          },
+        },
+      });
+    }
   };
 
   return (
@@ -73,6 +89,9 @@ export const Login = (): ReturnComponentType => {
           <button type="submit" className="mt-3 btn">
             Log In
           </button>
+          {loginMutationResult?.login.error && (
+            <FormError errorMessage={loginMutationResult.login.error} />
+          )}
         </form>
       </div>
     </div>
