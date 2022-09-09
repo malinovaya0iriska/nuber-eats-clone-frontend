@@ -1,16 +1,45 @@
+import { gql, useMutation } from '@apollo/client';
 import { useForm } from 'react-hook-form';
 
+import { LoginMutation, LoginMutationVariables } from '__generatedTypes__/LoginMutation';
+import { FormError } from 'components/FormError';
 import { ILoginForm } from 'pages/Login/interfaces';
 import { ReturnComponentType } from 'types';
+
+const LOGIN_MUTATION = gql`
+  mutation LoginMutation($loginInput: LoginInput!) {
+    login(input: $loginInput) {
+      ok
+      token
+      error
+    }
+  }
+`;
 
 export const Login = (): ReturnComponentType => {
   const {
     register,
+
+    watch,
     formState: { errors },
     handleSubmit,
   } = useForm<ILoginForm>();
 
-  const onSubmit = (): void => {};
+  const [loginMutation] = useMutation<LoginMutation, LoginMutationVariables>(
+    LOGIN_MUTATION,
+    {
+      variables: {
+        loginInput: {
+          email: watch('email'),
+          password: watch('password'),
+        },
+      },
+    },
+  );
+
+  const onSubmit = (): void => {
+    loginMutation();
+  };
 
   return (
     <div className="h-screen flex items-center justify-center bg-gray-800">
@@ -25,24 +54,20 @@ export const Login = (): ReturnComponentType => {
             className="input"
           />
 
-          {errors.email?.message && (
-            <span className="font-medium text-red-500">{errors.email?.message}</span>
-          )}
+          {errors.email?.message && <FormError errorMessage={errors.email?.message} />}
 
           <input
-            {...register('password', { required: 'Password is required', minLength: 10 })}
+            {...register('password', { required: 'Password is required', minLength: 3 })}
             type="password"
             placeholder="Password"
             className="input"
           />
 
           {errors.password?.message && (
-            <span className="font-medium text-red-500">{errors.password?.message}</span>
+            <FormError errorMessage={errors.password?.message} />
           )}
           {errors.password?.type === 'minLength' && (
-            <span className="font-medium text-red-500">
-              Password must be more than 10 chars.
-            </span>
+            <FormError errorMessage="Password must be more than 10 chars." />
           )}
 
           <button type="submit" className="mt-3 btn">
