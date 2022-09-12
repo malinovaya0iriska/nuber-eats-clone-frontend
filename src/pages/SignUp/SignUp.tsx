@@ -67,8 +67,6 @@ export const SignUp: FC = () => {
     if (!loading) {
       const { email, password, role } = getValues();
 
-      console.log(email, password);
-
       createAccountMutation({
         variables: {
           createAccountInput: { email, password, role },

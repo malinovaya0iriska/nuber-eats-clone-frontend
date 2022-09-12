@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 
 import { LoginMutation, LoginMutationVariables } from '__generatedTypes__/LoginMutation';
-import { authToken, isLoggedInVar } from 'apollo';
+import { authTokenVar, isLoggedInVar } from 'apollo';
 import { Button } from 'components/Button';
 import { FormError } from 'components/FormError';
 import { LOCAL_STORAGE_TOKEN } from 'constants/index';
@@ -41,7 +41,7 @@ export const Login = (): ReturnComponentType => {
     if (ok && token) {
       localStorage.setItem(LOCAL_STORAGE_TOKEN, token);
       console.log(token);
-      authToken(token);
+      authTokenVar(token);
       isLoggedInVar(true);
     }
   };
