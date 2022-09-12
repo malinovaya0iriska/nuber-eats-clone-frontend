@@ -1,9 +1,13 @@
 import { gql, useMutation } from '@apollo/client';
 import { useForm } from 'react-hook-form';
+import { Link } from 'react-router-dom';
 
 import { LoginMutation, LoginMutationVariables } from '__generatedTypes__/LoginMutation';
+import { Button } from 'components/Button';
 import { FormError } from 'components/FormError';
+import nuberLogo from 'images/logo.svg';
 import { ILoginForm } from 'pages/Login/interfaces';
+import { SIGN_UP } from 'routes/constants';
 import { ReturnComponentType } from 'types';
 
 const LOGIN_MUTATION = gql`
@@ -20,9 +24,11 @@ export const Login = (): ReturnComponentType => {
   const {
     register,
     getValues,
-    formState: { errors },
+    formState: { errors, isValid },
     handleSubmit,
-  } = useForm<ILoginForm>();
+  } = useForm<ILoginForm>({ mode: 'onBlur' });
+
+  console.log('isValid', isValid);
 
   const onCompleted = (data: LoginMutation): void => {
     const {
@@ -58,11 +64,14 @@ export const Login = (): ReturnComponentType => {
   };
 
   return (
-    <div className="h-screen flex items-center justify-center bg-gray-800">
-      <div className="bg-white w-full max-w-lg pt-10 pb-7 rounded-lg text-center">
-        <h3 className="text-2xl text-gray-800">Log In</h3>
+    <div className="h-screen flex items-center flex-col mt-10 lg:mt-28">
+      <div className="w-full max-w-screen-sm flex flex-col px-5 items-center">
+        <img src={nuberLogo} className="w-52 mb-10" alt="Uber Eats" />
+        <h4 className="w-full font-medium text-left text-xl lg:text-3xl mb-5">
+          Welcome back
+        </h4>
 
-        <form onSubmit={handleSubmit(onSubmit)} className="grid gap-3 mt-5 px-5">
+        <form onSubmit={handleSubmit(onSubmit)} className="grid gap-3 mt-5 w-full mb-3">
           <input
             {...register('email', { required: 'Email is required' })}
             type="email"
@@ -73,7 +82,10 @@ export const Login = (): ReturnComponentType => {
           {errors.email?.message && <FormError errorMessage={errors.email?.message} />}
 
           <input
-            {...register('password', { required: 'Password is required', minLength: 3 })}
+            {...register('password', {
+              required: 'Password is required',
+              minLength: 3,
+            })}
             type="password"
             placeholder="Password"
             className="input"
@@ -86,13 +98,19 @@ export const Login = (): ReturnComponentType => {
             <FormError errorMessage="Password must be more than 10 chars." />
           )}
 
-          <button type="submit" className="mt-3 btn">
-            Log In
-          </button>
+          <Button actionText="Log In" isDisabled={!isValid} isLoading={loading} />
+
           {loginMutationResult?.login.error && (
             <FormError errorMessage={loginMutationResult.login.error} />
           )}
         </form>
+
+        <div>
+          New to Nuber?
+          <Link to={SIGN_UP} className="text-lime-600 font-medium hover:underline">
+            Create an Account
+          </Link>
+        </div>
       </div>
     </div>
   );
