@@ -31,8 +31,6 @@ export const Login = (): ReturnComponentType => {
     handleSubmit,
   } = useForm<ILoginForm>({ mode: 'onBlur' });
 
-  console.log('isValid', isValid);
-
   const onCompleted = (data: LoginMutation): void => {
     const {
       login: { ok, token },
@@ -40,7 +38,6 @@ export const Login = (): ReturnComponentType => {
 
     if (ok && token) {
       localStorage.setItem(LOCAL_STORAGE_TOKEN, token);
-      console.log(token);
       authTokenVar(token);
       isLoggedInVar(true);
     }

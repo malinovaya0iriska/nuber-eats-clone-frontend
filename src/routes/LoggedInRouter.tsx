@@ -1,8 +1,11 @@
 import { FC } from 'react';
 
 import { gql, useQuery } from '@apollo/client';
+import { Navigate, Route, Routes } from 'react-router-dom';
 
 import { MeQuery } from '__generatedTypes__/MeQuery';
+import { Restaurants } from 'pages';
+import { BASE_URL, NON_MATCH_URL } from 'routes/constants';
 
 const ME_QUERY = gql`
   query MeQuery {
@@ -14,6 +17,8 @@ const ME_QUERY = gql`
     }
   }
 `;
+
+const ClientRoutes = [<Route key={BASE_URL} path={BASE_URL} element={<Restaurants />} />];
 
 export const LoggedInRouter: FC = () => {
   const { data, loading, error } = useQuery<MeQuery>(ME_QUERY);
@@ -27,8 +32,13 @@ export const LoggedInRouter: FC = () => {
   }
 
   return (
-    <div>
-      <h1>{data.me.email}</h1>
-    </div>
+    <Routes>
+      {data.me.role === 'Client' && ClientRoutes}
+      <Route
+        key={NON_MATCH_URL}
+        path={NON_MATCH_URL}
+        element={<Navigate to={BASE_URL} />}
+      />
+    </Routes>
   );
 };
