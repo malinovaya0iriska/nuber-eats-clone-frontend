@@ -1,8 +1,10 @@
 import { gql, useMutation } from '@apollo/client';
+import { Helmet } from 'react-helmet';
 import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 
 import { LoginMutation, LoginMutationVariables } from '__generatedTypes__/LoginMutation';
+import { isLoggedInVar } from 'apollo';
 import { Button } from 'components/Button';
 import { FormError } from 'components/FormError';
 import nuberLogo from 'images/logo.svg';
@@ -37,6 +39,7 @@ export const Login = (): ReturnComponentType => {
 
     if (ok) {
       console.log(token);
+      isLoggedInVar(true);
     }
   };
 
@@ -65,6 +68,9 @@ export const Login = (): ReturnComponentType => {
 
   return (
     <div className="h-screen flex items-center flex-col mt-10 lg:mt-28">
+      <Helmet>
+        <title>Login | Nuber Eats </title>
+      </Helmet>
       <div className="w-full max-w-screen-sm flex flex-col px-5 items-center">
         <img src={nuberLogo} className="w-52 mb-10" alt="Uber Eats" />
         <h4 className="w-full font-medium text-left text-xl lg:text-3xl mb-5">
