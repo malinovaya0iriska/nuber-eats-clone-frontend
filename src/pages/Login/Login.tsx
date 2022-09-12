@@ -4,9 +4,10 @@ import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 
 import { LoginMutation, LoginMutationVariables } from '__generatedTypes__/LoginMutation';
-import { isLoggedInVar } from 'apollo';
+import { authToken, isLoggedInVar } from 'apollo';
 import { Button } from 'components/Button';
 import { FormError } from 'components/FormError';
+import { LOCAL_STORAGE_TOKEN } from 'constants/index';
 import nuberLogo from 'images/logo.svg';
 import { ILoginForm } from 'pages/Login/interfaces';
 import { SIGN_UP } from 'routes/constants';
@@ -37,8 +38,10 @@ export const Login = (): ReturnComponentType => {
       login: { ok, token },
     } = data;
 
-    if (ok) {
+    if (ok && token) {
+      localStorage.setItem(LOCAL_STORAGE_TOKEN, token);
       console.log(token);
+      authToken(token);
       isLoggedInVar(true);
     }
   };
