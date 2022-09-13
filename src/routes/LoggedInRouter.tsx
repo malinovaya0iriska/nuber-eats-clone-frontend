@@ -1,27 +1,19 @@
 import { FC } from 'react';
 
-import { gql, useQuery } from '@apollo/client';
 import { Navigate, Route, Routes } from 'react-router-dom';
 
-import { MeQuery } from '__generatedTypes__/MeQuery';
-import { Restaurants } from 'pages';
-import { BASE_URL, NON_MATCH_URL } from 'routes/constants';
+import { Header } from 'components/Header';
+import { useMe } from 'hooks';
+import { ConfirmEmail, Restaurants } from 'pages';
+import { BASE_URL, CONFIRM_EMAIL, NON_MATCH_URL } from 'routes/constants';
 
-const ME_QUERY = gql`
-  query MeQuery {
-    me {
-      id
-      email
-      role
-      verified
-    }
-  }
-`;
-
-const ClientRoutes = [<Route key={BASE_URL} path={BASE_URL} element={<Restaurants />} />];
+const ClientRoutes = [
+  <Route key={1} path={BASE_URL} element={<Restaurants />} />,
+  <Route key={2} path={CONFIRM_EMAIL} element={<ConfirmEmail />} />,
+];
 
 export const LoggedInRouter: FC = () => {
-  const { data, loading, error } = useQuery<MeQuery>(ME_QUERY);
+  const { data, loading, error } = useMe();
 
   if (!data || loading || error) {
     return (
@@ -32,13 +24,17 @@ export const LoggedInRouter: FC = () => {
   }
 
   return (
-    <Routes>
-      {data.me.role === 'Client' && ClientRoutes}
-      <Route
-        key={NON_MATCH_URL}
-        path={NON_MATCH_URL}
-        element={<Navigate to={BASE_URL} />}
-      />
-    </Routes>
+    <div className="h-screen flex flex-col items-center">
+      <Header />
+
+      <Routes>
+        {data.me.role === 'Client' && ClientRoutes}
+        <Route
+          key={NON_MATCH_URL}
+          path={NON_MATCH_URL}
+          element={<Navigate to={BASE_URL} />}
+        />
+      </Routes>
+    </div>
   );
 };
