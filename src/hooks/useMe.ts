@@ -13,7 +13,6 @@ const ME_QUERY = gql`
   }
 `;
 
-// TODO
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 export const useMe = () => {
   return useQuery<MeQuery>(ME_QUERY);
