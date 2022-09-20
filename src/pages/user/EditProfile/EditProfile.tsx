@@ -1,5 +1,5 @@
 // import { gql } from '@apollo/client';
-import { gql, useMutation } from '@apollo/client';
+import { gql, useApolloClient, useMutation } from '@apollo/client';
 import { useForm } from 'react-hook-form';
 
 import {
@@ -25,7 +25,9 @@ interface IFormProps {
 }
 
 export const EditProfile = (): ReturnComponentType => {
-  const { data: userData, refetch } = useMe();
+  const { data: userData } = useMe();
+
+  const client = useApolloClient();
 
   const { register, handleSubmit, getValues, formState } = useForm<IFormProps>({
     mode: 'onChange',
@@ -34,13 +36,32 @@ export const EditProfile = (): ReturnComponentType => {
     },
   });
 
-  const onCompleted = async (data: EditProfileMutation): Promise<void> => {
+  const onCompleted = (data: EditProfileMutation): void => {
     const {
       editProfile: { ok },
     } = data;
 
     if (ok && userData) {
-      await refetch();
+      const {
+        me: { email: prevEmail, id },
+      } = userData;
+      const { email: newEmail } = getValues();
+
+      if (prevEmail !== newEmail) {
+        client.writeFragment({
+          id: `User:${id}`,
+          fragment: gql`
+            fragment EditedUser on User {
+              verified
+              email
+            }
+          `,
+          data: {
+            email: newEmail,
+            verified: false,
+          },
+        });
+      }
     }
   };
 
