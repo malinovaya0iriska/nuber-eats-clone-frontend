@@ -582,6 +582,10 @@ video {
   pointer-events: none;
 }
 
+.relative {
+  position: relative;
+}
+
 .mx-auto {
   margin-left: auto;
   margin-right: auto;
@@ -665,6 +669,10 @@ video {
 
 .w-3\/12 {
   width: 25%;
+}
+
+.w-3\/4 {
+  width: 75%;
 }
 
 .max-w-screen-xl {
@@ -926,6 +934,16 @@ video {
 .focus\:outline-none:focus {
   outline: 2px solid transparent;
   outline-offset: 2px;
+}
+
+@media (min-width: 768px) {
+  .md\:w-3\/12 {
+    width: 25%;
+  }
+
+  .md\:grid-cols-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
 }
 
 @media (min-width: 1024px) {

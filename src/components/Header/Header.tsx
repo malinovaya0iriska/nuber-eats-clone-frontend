@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 
 import { useMe } from 'hooks';
 import nuberLogo from 'images/logo.svg';
-import { MY_PROFILE } from 'routes/constants';
+import { BASE_URL, EDIT_PROFILE } from 'routes/constants';
 import { ReturnComponentType } from 'types';
 
 export const Header: FC = (): ReturnComponentType => {
@@ -22,9 +22,11 @@ export const Header: FC = (): ReturnComponentType => {
 
       <header className="py-4 w-full">
         <div className="px-5 xl:px-0 max-w-screen-xl mx-auto flex justify-between items-center">
-          <img src={nuberLogo} className="w-24" alt="Nuber Eats" />
+          <Link to={BASE_URL}>
+            <img src={nuberLogo} className="w-24" alt="Nuber Eats" />
+          </Link>
           <span className="text-xs">
-            <Link to={MY_PROFILE}>
+            <Link to={EDIT_PROFILE}>
               <FontAwesomeIcon icon={faUser} className="text-xl" />
             </Link>
           </span>

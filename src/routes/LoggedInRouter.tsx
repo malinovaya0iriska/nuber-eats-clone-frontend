@@ -2,15 +2,23 @@ import { FC } from 'react';
 
 import { Navigate, Route, Routes } from 'react-router-dom';
 
+import { SearchRestaurants } from 'components';
 import { Header } from 'components/Header';
 import { useMe } from 'hooks';
 import { ConfirmEmail, Restaurants, EditProfile } from 'pages';
-import { BASE_URL, CONFIRM_EMAIL, EDIT_PROFILE, NON_MATCH_URL } from 'routes/constants';
+import {
+  BASE_URL,
+  CONFIRM_EMAIL,
+  EDIT_PROFILE,
+  NON_MATCH_URL,
+  SEARCH_ITEM,
+} from 'routes/constants';
 
 const ClientRoutes = [
   <Route key={1} path={BASE_URL} element={<Restaurants />} />,
   <Route key={2} path={CONFIRM_EMAIL} element={<ConfirmEmail />} />,
   <Route key={3} path={EDIT_PROFILE} element={<EditProfile />} />,
+  <Route key={4} path={SEARCH_ITEM} element={<SearchRestaurants />} />,
 ];
 
 export const LoggedInRouter: FC = () => {

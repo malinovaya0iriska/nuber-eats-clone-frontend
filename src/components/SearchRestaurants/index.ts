@@ -1,0 +1,1 @@
+export { SearchRestaurants } from './SearchRestaurants';
