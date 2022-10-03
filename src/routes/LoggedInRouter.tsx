@@ -5,9 +5,10 @@ import { Navigate, Route, Routes } from 'react-router-dom';
 import { SearchRestaurants } from 'components';
 import { Header } from 'components/Header';
 import { useMe } from 'hooks';
-import { ConfirmEmail, Restaurants, EditProfile } from 'pages';
+import { ConfirmEmail, Restaurants, EditProfile, Category } from 'pages';
 import {
   BASE_URL,
+  CATEGORY,
   CONFIRM_EMAIL,
   EDIT_PROFILE,
   NON_MATCH_URL,
@@ -19,6 +20,7 @@ const ClientRoutes = [
   <Route key={2} path={CONFIRM_EMAIL} element={<ConfirmEmail />} />,
   <Route key={3} path={EDIT_PROFILE} element={<EditProfile />} />,
   <Route key={4} path={SEARCH_ITEM} element={<SearchRestaurants />} />,
+  <Route key={5} path={`${CATEGORY}/:slug`} element={<Category />} />,
 ];
 
 export const LoggedInRouter: FC = () => {

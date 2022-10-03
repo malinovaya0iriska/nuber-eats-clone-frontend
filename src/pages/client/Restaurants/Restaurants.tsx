@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { gql, useQuery } from '@apollo/client';
 import { Helmet } from 'react-helmet';
 import { useForm } from 'react-hook-form';
-import { createSearchParams, useNavigate } from 'react-router-dom';
+import { createSearchParams, Link, useNavigate } from 'react-router-dom';
 
 import {
   RestaurantsPageQuery,
@@ -11,9 +11,9 @@ import {
 } from '__generatedTypes__/RestaurantsPageQuery';
 import { Restaurant } from 'components/Restaurant';
 import { ONE } from 'constants/index';
-import { RESTAURANT_FRAGMENT } from 'fragments';
+import { CATEGORY_FRAGMENT, RESTAURANT_FRAGMENT } from 'fragments';
 import { IFormProps } from 'pages/client/Restaurants/interfaces';
-import { SEARCH_ITEM } from 'routes/constants';
+import { CATEGORY, SEARCH_ITEM } from 'routes/constants';
 import { ReturnComponentType } from 'types';
 
 const RESTAURANTS_QUERY = gql`
@@ -22,11 +22,7 @@ const RESTAURANTS_QUERY = gql`
       ok
       error
       categories {
-        id
-        name
-        coverImage
-        slug
-        restaurantCount
+        ...CategoryParts
       }
     }
     restaurants(input: $input) {
@@ -40,6 +36,7 @@ const RESTAURANTS_QUERY = gql`
     }
   }
   ${RESTAURANT_FRAGMENT}
+  ${CATEGORY_FRAGMENT}
 `;
 
 export const Restaurants = (): ReturnComponentType => {
@@ -73,14 +70,16 @@ export const Restaurants = (): ReturnComponentType => {
   };
 
   const categoriesList = data?.allCategories.categories?.map(
-    ({ id, coverImage, name }) => (
-      <div key={id} className="flex flex-col group items-center cursor-pointer">
-        <div
-          className="w-14 h-14 bg-cover hover:bg-gray-300 rounded-full bg-gray-100"
-          style={{ backgroundImage: `url(${coverImage})` }}
-        />
-        <span className="mt-1 text-sm text-center font-medium">{name}</span>
-      </div>
+    ({ id, coverImage, name, slug }) => (
+      <Link key={id} to={`${CATEGORY}/${slug}`} replace>
+        <div className="flex flex-col group items-center cursor-pointer">
+          <div
+            className="w-14 h-14 bg-cover hover:bg-gray-300 rounded-full bg-gray-100"
+            style={{ backgroundImage: `url(${coverImage})` }}
+          />
+          <span className="mt-1 text-sm text-center font-medium">{name}</span>
+        </div>
+      </Link>
     ),
   );
 
