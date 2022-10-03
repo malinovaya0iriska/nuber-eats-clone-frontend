@@ -5,3 +5,4 @@ export const CONFIRM_EMAIL = '/confirm';
 export const EDIT_PROFILE = '/edit-profile';
 export const SEARCH_ITEM = '/search';
 export const CATEGORY = '/category';
+export const RESTAURANTS = '/restaurants';

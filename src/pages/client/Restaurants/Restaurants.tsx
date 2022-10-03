@@ -8,7 +8,7 @@ import {
   RestaurantsPageQueryVariables,
 } from '__generatedTypes__/RestaurantsPageQuery';
 import { Pagination } from 'components/Pagination';
-import { Restaurant } from 'components/Restaurant';
+import { RestaurantCard } from 'components/RestaurantCard';
 import { CATEGORY_FRAGMENT, RESTAURANT_FRAGMENT } from 'fragments';
 import { usePagination } from 'hooks';
 import { IFormProps } from 'pages/client/Restaurants/interfaces';
@@ -81,7 +81,7 @@ export const Restaurants = (): ReturnComponentType => {
 
   const restaurantsList = data?.restaurants.results?.map(
     ({ id, coverImage, name, category }) => (
-      <Restaurant
+      <RestaurantCard
         key={id}
         id={`${id} `}
         coverImage={coverImage}

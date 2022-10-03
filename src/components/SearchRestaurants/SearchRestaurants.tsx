@@ -9,7 +9,7 @@ import {
   SearchRestaurantVariables,
 } from '__generatedTypes__/SearchRestaurant';
 import { Pagination } from 'components/Pagination';
-import { Restaurant } from 'components/Restaurant';
+import { RestaurantCard } from 'components/RestaurantCard';
 import { RESTAURANT_FRAGMENT } from 'fragments';
 import { usePagination } from 'hooks';
 import { BASE_URL } from 'routes/constants';
@@ -56,7 +56,7 @@ export const SearchRestaurants: FC = () => {
 
   const restaurantsList = data?.searchRestaurant.restaurants?.map(
     ({ id, coverImage, name, category }) => (
-      <Restaurant
+      <RestaurantCard
         key={id}
         id={`${id} `}
         coverImage={coverImage}

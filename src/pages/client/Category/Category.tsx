@@ -4,7 +4,7 @@ import { Link, useParams } from 'react-router-dom';
 
 import { CategoryData, CategoryDataVariables } from '__generatedTypes__/CategoryData';
 import { Pagination } from 'components/Pagination';
-import { Restaurant } from 'components/Restaurant';
+import { RestaurantCard } from 'components/RestaurantCard';
 import { RESTAURANT_FRAGMENT, CATEGORY_FRAGMENT } from 'fragments';
 import { usePagination } from 'hooks';
 import { ICategoryParams } from 'pages/client/Category/interfaces';
@@ -45,7 +45,7 @@ export const Category = (): ReturnComponentType => {
 
   const restaurantsList = data?.category.restaurants?.map(
     ({ id, coverImage, name, category }) => (
-      <Restaurant
+      <RestaurantCard
         key={id}
         id={`${id} `}
         coverImage={coverImage}

@@ -1,4 +1,4 @@
-export interface IRestaurantProps {
+export interface IRestaurantCardProps {
   id: string;
   coverImage: string;
   name: string;
