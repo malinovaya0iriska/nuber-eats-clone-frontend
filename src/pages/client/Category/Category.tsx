@@ -1,8 +1,12 @@
 import { gql, useQuery } from '@apollo/client';
-import { useParams } from 'react-router-dom';
+import { Helmet } from 'react-helmet';
+import { Link, useParams } from 'react-router-dom';
 
 import { CategoryData, CategoryDataVariables } from '__generatedTypes__/CategoryData';
+import { Pagination } from 'components/Pagination';
+import { Restaurant } from 'components/Restaurant';
 import { RESTAURANT_FRAGMENT, CATEGORY_FRAGMENT } from 'fragments';
+import { usePagination } from 'hooks';
 import { ICategoryParams } from 'pages/client/Category/interfaces';
 import { ReturnComponentType } from 'types';
 
@@ -28,19 +32,53 @@ const CATEGORY_QUERY = gql`
 export const Category = (): ReturnComponentType => {
   const { slug } = useParams<ICategoryParams>();
 
-  const { data, loading } = useQuery<CategoryData, CategoryDataVariables>(
-    CATEGORY_QUERY,
-    {
-      variables: {
-        input: {
-          page: 1,
-          slug: slug || '',
-        },
+  const { page, onNextPageClick, onPrevPageClick } = usePagination();
+
+  const { data } = useQuery<CategoryData, CategoryDataVariables>(CATEGORY_QUERY, {
+    variables: {
+      input: {
+        page,
+        slug: slug || '',
       },
     },
+  });
+
+  const restaurantsList = data?.category.restaurants?.map(
+    ({ id, coverImage, name, category }) => (
+      <Restaurant
+        key={id}
+        id={`${id} `}
+        coverImage={coverImage}
+        name={name}
+        categoryName={category?.name}
+      />
+    ),
   );
 
-  console.log(data, loading, 'SLUG', slug);
-
-  return <h1>Category</h1>;
+  return (
+    <div className="w-full">
+      <Helmet>
+        <title>Search | Nuber Eats</title>
+      </Helmet>
+      <h1 className="text-center text-xl">Results for {slug}</h1>
+      {data?.category.totalPages ? (
+        <>
+          <div className="max-w-screen-xl mx-auto grid mt-16 md:grid-cols-3 gap-x-5 gap-y-10 px-4">
+            {restaurantsList}
+          </div>
+          <Pagination
+            page={page}
+            onNextPageClick={onNextPageClick}
+            onPrevPageClick={onPrevPageClick}
+            totalPages={data.category.totalPages!}
+          />
+        </>
+      ) : (
+        <>
+          <h2 className="mx-auto">Nothing was found</h2>
+          <Link to="-1"> &larr; Back</Link>
+        </>
+      )}
+    </div>
+  );
 };
