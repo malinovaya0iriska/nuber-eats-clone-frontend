@@ -2,14 +2,16 @@ import { FC, useEffect } from 'react';
 
 import { gql, useLazyQuery } from '@apollo/client';
 import { Helmet } from 'react-helmet';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 import {
   SearchRestaurant,
   SearchRestaurantVariables,
 } from '__generatedTypes__/SearchRestaurant';
-import { ONE } from 'constants/index';
+import { Pagination } from 'components/Pagination';
+import { Restaurant } from 'components/Restaurant';
 import { RESTAURANT_FRAGMENT } from 'fragments';
+import { usePagination } from 'hooks';
 import { BASE_URL } from 'routes/constants';
 
 const SEARCH_RESTAURANT = gql`
@@ -30,35 +32,64 @@ const SEARCH_RESTAURANT = gql`
 export const SearchRestaurants: FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const [callQuery, { loading, data, called }] = useLazyQuery<
-    SearchRestaurant,
-    SearchRestaurantVariables
-  >(SEARCH_RESTAURANT);
+  const [callQuery, { data }] = useLazyQuery<SearchRestaurant, SearchRestaurantVariables>(
+    SEARCH_RESTAURANT,
+  );
+
+  const { page, onNextPageClick, onPrevPageClick } = usePagination();
 
   useEffect(() => {
     const [, query] = location.search.split('?term=');
 
     if (!query) {
-      return navigate(BASE_URL);
+      navigate(BASE_URL);
     }
     callQuery({
       variables: {
         input: {
-          page: ONE,
+          page,
           query,
         },
       },
     });
-  }, [navigate, location, callQuery]);
+  }, [page, navigate, location, callQuery]);
 
-  console.log(loading, data, called);
+  const restaurantsList = data?.searchRestaurant.restaurants?.map(
+    ({ id, coverImage, name, category }) => (
+      <Restaurant
+        key={id}
+        id={`${id} `}
+        coverImage={coverImage}
+        name={name}
+        categoryName={category?.name}
+      />
+    ),
+  );
 
   return (
-    <div>
+    <div className="w-full">
       <Helmet>
         <title>Search | Nuber Eats</title>
       </Helmet>
-      <h1>Search page</h1>
+
+      {data?.searchRestaurant.totalResults ? (
+        <>
+          <div className="max-w-screen-xl mx-auto grid mt-16 md:grid-cols-3 gap-x-5 gap-y-10 px-4">
+            {restaurantsList}
+          </div>
+          <Pagination
+            page={page}
+            onNextPageClick={onNextPageClick}
+            onPrevPageClick={onPrevPageClick}
+            totalPages={data.searchRestaurant.totalPages!}
+          />
+        </>
+      ) : (
+        <>
+          <h2 className="mx-auto">Nothing was found</h2>
+          <Link to="-1"> &larr; Back</Link>
+        </>
+      )}
     </div>
   );
 };

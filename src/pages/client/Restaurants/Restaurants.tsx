@@ -1,5 +1,3 @@
-import { useState } from 'react';
-
 import { gql, useQuery } from '@apollo/client';
 import { Helmet } from 'react-helmet';
 import { useForm } from 'react-hook-form';
@@ -9,9 +7,10 @@ import {
   RestaurantsPageQuery,
   RestaurantsPageQueryVariables,
 } from '__generatedTypes__/RestaurantsPageQuery';
+import { Pagination } from 'components/Pagination';
 import { Restaurant } from 'components/Restaurant';
-import { ONE } from 'constants/index';
 import { CATEGORY_FRAGMENT, RESTAURANT_FRAGMENT } from 'fragments';
+import { usePagination } from 'hooks';
 import { IFormProps } from 'pages/client/Restaurants/interfaces';
 import { CATEGORY, SEARCH_ITEM } from 'routes/constants';
 import { ReturnComponentType } from 'types';
@@ -40,7 +39,7 @@ const RESTAURANTS_QUERY = gql`
 `;
 
 export const Restaurants = (): ReturnComponentType => {
-  const [page, setPage] = useState<number>(ONE);
+  const { page, onNextPageClick, onPrevPageClick } = usePagination();
 
   const { data, loading } = useQuery<RestaurantsPageQuery, RestaurantsPageQueryVariables>(
     RESTAURANTS_QUERY,
@@ -52,9 +51,6 @@ export const Restaurants = (): ReturnComponentType => {
       },
     },
   );
-  const onNextPageClick = (): void => setPage((current: number) => current + ONE);
-
-  const onPrevPageClick = (): void => setPage((current: number) => current - ONE);
 
   const { register, handleSubmit, getValues } = useForm<IFormProps>();
 
@@ -71,7 +67,7 @@ export const Restaurants = (): ReturnComponentType => {
 
   const categoriesList = data?.allCategories.categories?.map(
     ({ id, coverImage, name, slug }) => (
-      <Link key={id} to={`${CATEGORY}/${slug}`} replace>
+      <Link key={id} to={`${CATEGORY}/${slug}`}>
         <div className="flex flex-col group items-center cursor-pointer">
           <div
             className="w-14 h-14 bg-cover hover:bg-gray-300 rounded-full bg-gray-100"
@@ -114,36 +110,17 @@ export const Restaurants = (): ReturnComponentType => {
       {!loading && (
         <div className="max-w-screen-2xl pb-20 mx-auto mt-8">
           <div className="flex justify-around max-w-sm mx-auto ">{categoriesList}</div>
-          <div className="grid mt-16 md:grid-cols-3 gap-x-5 gap-y-10">
+          <div className="grid mt-16 md:grid-cols-3 gap-x-5 gap-y-10 px-4">
             {restaurantsList}
           </div>
-          <div className="grid grid-cols-3 text-center max-w-md items-center mx-auto mt-10">
-            {page > 1 ? (
-              <button
-                type="button"
-                onClick={onPrevPageClick}
-                className="focus:outline-none font-medium text-2xl"
-              >
-                &larr;
-              </button>
-            ) : (
-              <div />
-            )}
-            <span>
-              Page {page} of {data?.restaurants.totalPages}
-            </span>
-            {page !== data?.restaurants.totalPages ? (
-              <button
-                type="button"
-                onClick={onNextPageClick}
-                className="focus:outline-none font-medium text-2xl"
-              >
-                &rarr;
-              </button>
-            ) : (
-              <div />
-            )}
-          </div>
+          {data?.restaurants.totalPages && (
+            <Pagination
+              page={page}
+              totalPages={data.restaurants.totalPages}
+              onNextPageClick={onNextPageClick}
+              onPrevPageClick={onPrevPageClick}
+            />
+          )}
         </div>
       )}
     </div>
