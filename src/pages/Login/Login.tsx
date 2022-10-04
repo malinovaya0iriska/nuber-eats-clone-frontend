@@ -13,7 +13,7 @@ import { ILoginForm } from 'pages/Login/interfaces';
 import { SIGN_UP } from 'routes/constants';
 import { ReturnComponentType } from 'types';
 
-const LOGIN_MUTATION = gql`
+export const LOGIN_MUTATION = gql`
   mutation LoginMutation($loginInput: LoginInput!) {
     login(input: $loginInput) {
       ok
@@ -48,7 +48,6 @@ export const Login = (): ReturnComponentType => {
     LoginMutationVariables
   >(LOGIN_MUTATION, {
     onCompleted,
-    onError: () => null,
   });
 
   const onSubmit = (): void => {
@@ -79,7 +78,11 @@ export const Login = (): ReturnComponentType => {
 
         <form onSubmit={handleSubmit(onSubmit)} className="grid gap-3 mt-5 w-full mb-3">
           <input
-            {...register('email', { required: 'Email is required' })}
+            {...register('email', {
+              required: 'Email is required',
+              pattern:
+                /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+            })}
             type="email"
             placeholder="Email"
             className="input"
@@ -87,10 +90,14 @@ export const Login = (): ReturnComponentType => {
 
           {errors.email?.message && <FormError errorMessage={errors.email?.message} />}
 
+          {errors.email?.type === 'pattern' && (
+            <FormError errorMessage="Please enter a valid email" />
+          )}
+
           <input
             {...register('password', {
               required: 'Password is required',
-              minLength: 3,
+              minLength: 5,
             })}
             type="password"
             placeholder="Password"
@@ -101,7 +108,7 @@ export const Login = (): ReturnComponentType => {
             <FormError errorMessage={errors.password?.message} />
           )}
           {errors.password?.type === 'minLength' && (
-            <FormError errorMessage="Password must be more than 10 chars." />
+            <FormError errorMessage="Password must be more than 5 chars." />
           )}
 
           <Button actionText="Log In" isDisabled={!isValid} isLoading={loading} />
