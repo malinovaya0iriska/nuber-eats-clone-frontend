@@ -38,7 +38,8 @@
     "eject": "react-scripts eject",
     "prepare": "husky install",
     "lint-fix": "eslint --fix",
-    "generate": "graphql-codegen"
+    "generate": "graphql-codegen",
+    "test:coverage": "npm test -- --coverage --watchAll=false"
   },
   "lint-staged": {
     "**/*.{js,ts,jsx,tsx}": [
@@ -86,5 +87,12 @@
     "postcss": "^8.4.16",
     "prettier": "^2.7.1",
     "tailwindcss": "^3.1.8"
+  },
+  "jest": {
+    "collectCoverageFrom": [
+      "./src/components/**/*.tsx",
+      "./src/pages/**/*.tsx",
+      "./src/routes/**/*.tsx"
+    ]
   }
 }
