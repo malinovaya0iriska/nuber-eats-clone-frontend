@@ -45,7 +45,6 @@ describe('<Login />', () => {
     });
 
     userEvent.clear(email);
-    email.blur();
 
     await waitFor(() => {
       const errorMessage = getByRole('alert');

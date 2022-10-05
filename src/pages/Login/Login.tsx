@@ -29,7 +29,7 @@ export const Login = (): ReturnComponentType => {
     getValues,
     formState: { errors, isValid },
     handleSubmit,
-  } = useForm<ILoginForm>({ mode: 'onBlur' });
+  } = useForm<ILoginForm>({ mode: 'onTouched' });
 
   const onCompleted = (data: LoginMutation): void => {
     const {

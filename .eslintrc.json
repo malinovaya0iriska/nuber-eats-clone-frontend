@@ -10,7 +10,8 @@
     "plugin:react/recommended",
     "plugin:import/recommended",
     "plugin:prettier/recommended",
-    "plugin:react-hooks/recommended"
+    "plugin:react-hooks/recommended",
+    "plugin:cypress/recommended"
   ],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
@@ -20,7 +21,14 @@
     "ecmaVersion": "latest",
     "sourceType": "module"
   },
-  "plugins": ["react", "import", "prettier", "react-hooks", "@typescript-eslint"],
+  "plugins": [
+    "react",
+    "import",
+    "prettier",
+    "react-hooks",
+    "@typescript-eslint",
+    "cypress"
+  ],
   "overrides": [
     {
       "files": [
@@ -115,7 +123,13 @@
       {
         "allowExpressions": true
       }
-    ]
+    ],
+    "cypress/no-assigning-return-values": "error",
+    "cypress/no-unnecessary-waiting": "error",
+    "cypress/assertion-before-screenshot": "warn",
+    "cypress/no-force": "warn",
+    "cypress/no-async-tests": "error",
+    "cypress/no-pause": "error"
   },
   "settings": {
     "import/resolver": {

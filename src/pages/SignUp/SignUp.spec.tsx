@@ -42,7 +42,6 @@ describe('<SignUp />', () => {
     const button = getByRole('button');
 
     userEvent.type(email, 'wont@work');
-    email.blur();
 
     await waitFor(() => {
       const errorMessage = getByRole('alert');
