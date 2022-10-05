@@ -16,7 +16,7 @@ import { UserRole } from 'graphql/generated/schema';
 import nuberLogo from 'images/logo.svg';
 import { BASE_URL } from 'routes/constants';
 
-const CREATE_ACCOUNT_MUTATION = gql`
+export const CREATE_ACCOUNT_MUTATION = gql`
   mutation CreateAccountMutation($createAccountInput: CreateAccountInput!) {
     createAccount(input: $createAccountInput) {
       ok
@@ -105,7 +105,7 @@ export const SignUp: FC = () => {
             <FormError errorMessage="Please enter a valid email" />
           )}
           <input
-            {...register('password', { required: 'Password is required' })}
+            {...register('password', { required: 'Password is required', minLength: 5 })}
             type="password"
             placeholder="Password"
             className="input"
@@ -113,6 +113,10 @@ export const SignUp: FC = () => {
           {errors.password?.message && (
             <FormError errorMessage={errors.password?.message} />
           )}
+          {errors.password?.type === 'minLength' && (
+            <FormError errorMessage="Password must be more than 5 chars." />
+          )}
+
           <select {...register('role', { required: true })} className="input">
             {listOfRoles}
           </select>
