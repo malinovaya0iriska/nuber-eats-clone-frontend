@@ -1,12 +1,14 @@
+import { BASE_URL } from '../../src/routes/constants/index';
+
 describe('Log In', () => {
   const user = cy;
 
   it('should see login page', () => {
-    user.visit('/').title().should('eq', 'Login | Nuber Eats');
+    user.visit(BASE_URL).assertTitle('Login');
   });
 
   it('can see email / password validation errors', () => {
-    user.visit('/');
+    user.visit(BASE_URL);
     user.findByPlaceholderText(/email/i).type('bad@email').blur();
     user.findByRole('alert').should('have.text', 'Please enter a valid email');
     user.findByPlaceholderText(/email/i).clear().blur();

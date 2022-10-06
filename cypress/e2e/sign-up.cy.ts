@@ -1,8 +1,10 @@
+import { BASE_URL, SIGN_UP } from '../../src/routes/constants/index';
+
 describe('Create Account', () => {
   const user = cy;
 
   it('should see email / password validation errors', () => {
-    user.visit('/');
+    user.visit(BASE_URL);
     user.findByText(/create an account/i).click();
     user.findByPlaceholderText(/email/i).type('non@good');
     user.findByRole('alert').should('have.text', 'Please enter a valid email');
@@ -21,19 +23,11 @@ describe('Create Account', () => {
       const { operationName } = req.body;
       if (operationName && operationName === 'CreateAccountMutation') {
         req.reply(res => {
-          res.send({
-            data: {
-              createAccount: {
-                ok: true,
-                error: null,
-                __typename: 'CreateAccountOutput',
-              },
-            },
-          });
+          res.send({ fixture: 'create-account.json' });
         });
       }
     });
-    user.visit('/sign-up');
+    user.visit(SIGN_UP);
     user.findByPlaceholderText(/email/i).type('mybest@mail.com');
     user.findByPlaceholderText(/password/i).type('123456');
     user.findByRole('button').click();
