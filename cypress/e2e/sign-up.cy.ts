@@ -37,14 +37,8 @@ describe('Create Account', () => {
     user.findByPlaceholderText(/email/i).type('mybest@mail.com');
     user.findByPlaceholderText(/password/i).type('123456');
     user.findByRole('button').click();
-    user.wait(2000);
-    user.title().should('eq', 'Login | Nuber Eats');
-    user.findByPlaceholderText(/email/i).type('mybest@mail.com');
-    user
-      .findByPlaceholderText(/password/i)
-      .type('123456')
-      .blur();
-    user.findByRole('button').click();
-    user.window().its('localStorage.nuber-token').should('be.a', 'string');
+    user.wait(1000);
+    user.login('mybest@mail.com', '123456');
+    user.assertLoggedIn();
   });
 });

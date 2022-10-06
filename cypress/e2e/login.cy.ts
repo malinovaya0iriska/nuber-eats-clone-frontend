@@ -25,13 +25,6 @@ describe('Log In', () => {
   });
 
   it('can fill out the form', () => {
-    user.visit('/');
-    user.findByPlaceholderText(/email/i).type('free@samuraijs.com');
-    user
-      .findByPlaceholderText(/password/i)
-      .type('12345')
-      .blur();
-    user.findByRole('button').should('not.have.class', 'pointer-events-none').click();
-    user.window().its('localStorage.nuber-token').should('be.a', 'string');
+    user.login('free@samuraijs.com', '12345');
   });
 });
