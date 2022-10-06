@@ -5,24 +5,40 @@ import { Navigate, Route, Routes } from 'react-router-dom';
 import { SearchRestaurants } from 'components';
 import { Header } from 'components/Header';
 import { useMe } from 'hooks';
-import { ConfirmEmail, Restaurants, EditProfile, Category, Restaurant } from 'pages';
 import {
-  BASE_URL,
-  CATEGORY,
-  CONFIRM_EMAIL,
-  EDIT_PROFILE,
-  NON_MATCH_URL,
-  RESTAURANTS,
-  SEARCH_ITEM,
-} from 'routes/constants';
+  ConfirmEmail,
+  Restaurants,
+  EditProfile,
+  Category,
+  Restaurant,
+  MyRestaurants,
+} from 'pages';
+import { Paths } from 'routes/constants';
 
-const ClientRoutes = [
-  <Route key={1} path={BASE_URL} element={<Restaurants />} />,
-  <Route key={2} path={CONFIRM_EMAIL} element={<ConfirmEmail />} />,
-  <Route key={3} path={EDIT_PROFILE} element={<EditProfile />} />,
-  <Route key={4} path={SEARCH_ITEM} element={<SearchRestaurants />} />,
-  <Route key={5} path={`${CATEGORY}/:slug`} element={<Category />} />,
-  <Route key={6} path={`${RESTAURANTS}/:id`} element={<Restaurant />} />,
+const commonRoutes = [
+  { path: Paths.ConfirmEmail, component: <ConfirmEmail /> },
+  { path: Paths.EditProfile, component: <EditProfile /> },
+];
+
+const restaurantRoutes = [{ path: Paths.BaseUrl, component: <MyRestaurants /> }];
+
+const clientRoutes = [
+  {
+    path: Paths.BaseUrl,
+    component: <Restaurants />,
+  },
+  {
+    path: Paths.SearchItem,
+    component: <SearchRestaurants />,
+  },
+  {
+    path: `${Paths.Category}/:slug`,
+    component: <Category />,
+  },
+  {
+    path: `${Paths.Restaurants}/:id`,
+    component: <Restaurant />,
+  },
 ];
 
 export const LoggedInRouter: FC = () => {
@@ -41,11 +57,24 @@ export const LoggedInRouter: FC = () => {
       <Header />
 
       <Routes>
-        {data.me.role === 'Client' && ClientRoutes}
+        {commonRoutes.map(({ path, component }) => (
+          <Route key={path} path={path} element={component} />
+        ))}
+
+        {data.me.role === 'Client' &&
+          clientRoutes.map(({ path, component }) => (
+            <Route key={path} path={path} element={component} />
+          ))}
+
+        {data.me.role === 'Owner' &&
+          restaurantRoutes.map(({ path, component }) => (
+            <Route key={path} path={path} element={component} />
+          ))}
+
         <Route
-          key={NON_MATCH_URL}
-          path={NON_MATCH_URL}
-          element={<Navigate to={BASE_URL} />}
+          key={Paths.NonMatchUrl}
+          path={Paths.NonMatchUrl}
+          element={<Navigate to={Paths.BaseUrl} />}
         />
       </Routes>
     </div>
