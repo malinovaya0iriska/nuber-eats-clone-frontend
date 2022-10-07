@@ -16,4 +16,5 @@ export enum Paths {
   Restaurants = '/restaurants',
   SearchItem = '/search',
   Category = '/category',
+  AddRestaurant = '/add-restaurant',
 }

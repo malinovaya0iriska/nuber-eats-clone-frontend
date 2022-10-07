@@ -12,6 +12,7 @@ import {
   Category,
   Restaurant,
   MyRestaurants,
+  AddRestaurant,
 } from 'pages';
 import { Paths } from 'routes/constants';
 
@@ -20,7 +21,10 @@ const commonRoutes = [
   { path: Paths.EditProfile, component: <EditProfile /> },
 ];
 
-const restaurantRoutes = [{ path: Paths.BaseUrl, component: <MyRestaurants /> }];
+const restaurantRoutes = [
+  { path: Paths.BaseUrl, component: <MyRestaurants /> },
+  { path: Paths.AddRestaurant, component: <AddRestaurant /> },
+];
 
 const clientRoutes = [
   {

@@ -7,3 +7,4 @@ export { Restaurant } from './client/Restaurant';
 export { Category } from './client/Category';
 export { EditProfile } from './user/EditProfile';
 export { MyRestaurants } from './owner/MyRestaurants';
+export { AddRestaurant } from './owner/AddRestaurant';
