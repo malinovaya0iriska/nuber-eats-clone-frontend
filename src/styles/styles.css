@@ -590,6 +590,7 @@ video {
 }
 
 .input {
+  width: 100%;
   border-radius: 0.5rem;
   --tw-bg-opacity: 1;
   background-color: rgb(243 244 246 / var(--tw-bg-opacity));
@@ -957,6 +958,10 @@ video {
 
 .font-light {
   font-weight: 300;
+}
+
+.font-bold {
+  font-weight: 700;
 }
 
 .tracking-wide {

@@ -41,8 +41,11 @@ export const AddRestaurant = (): ReturnComponentType => {
         <title>Add Restaurant | Nuber Eats</title>
       </Helmet>
 
-      <h1>Add Restaurant</h1>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <h1 className="text-center font-bold">Add Restaurant</h1>
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="grid max-w-screen-sm gap-3 mt-5 w-full mb-5 mx-auto"
+      >
         <input
           className="input"
           type="text"
