@@ -92,7 +92,7 @@ export const Restaurants = (): ReturnComponentType => {
   );
 
   return (
-    <div className="w-full">
+    <div className="w-full h-screen">
       <Helmet>
         <title>Home | Nuber Eats</title>
       </Helmet>
@@ -110,9 +110,7 @@ export const Restaurants = (): ReturnComponentType => {
       {!loading && (
         <div className="max-w-screen-2xl pb-20 mx-auto mt-8">
           <div className="flex justify-around max-w-sm mx-auto ">{categoriesList}</div>
-          <div className="grid mt-16 md:grid-cols-3 gap-x-5 gap-y-10 px-4">
-            {restaurantsList}
-          </div>
+          <div className="itemsList">{restaurantsList}</div>
           {data?.restaurants.totalPages && (
             <Pagination
               page={page}

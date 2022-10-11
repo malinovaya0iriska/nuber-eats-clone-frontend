@@ -21,3 +21,7 @@
 .link {
   @apply text-lime-600 hover:underline;
 }
+
+.itemsList {
+  @apply grid mt-16 md:grid-cols-3 gap-x-5 gap-y-10 px-4;
+}

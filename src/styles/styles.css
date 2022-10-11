@@ -662,12 +662,12 @@ video {
   margin-top: 2rem;
 }
 
-.mt-32 {
-  margin-top: 8rem;
-}
-
 .mt-52 {
   margin-top: 13rem;
+}
+
+.mt-32 {
+  margin-top: 8rem;
 }
 
 .mb-1 {
@@ -960,10 +960,6 @@ video {
   font-weight: 300;
 }
 
-.font-bold {
-  font-weight: 700;
-}
-
 .tracking-wide {
   letter-spacing: 0.025em;
 }
@@ -1012,6 +1008,22 @@ video {
 .link:hover {
   -webkit-text-decoration-line: underline;
           text-decoration-line: underline;
+}
+
+.itemsList {
+  margin-top: 4rem;
+  display: grid;
+  -webkit-column-gap: 1.25rem;
+          column-gap: 1.25rem;
+  row-gap: 2.5rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+@media (min-width: 768px) {
+  .itemsList {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
 }
 
 .hover\:bg-gray-850:hover {
