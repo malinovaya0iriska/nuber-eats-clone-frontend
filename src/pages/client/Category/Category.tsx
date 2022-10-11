@@ -1,5 +1,5 @@
 import { gql, useQuery } from '@apollo/client';
-import { Helmet } from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 import { Link, useParams } from 'react-router-dom';
 
 import { CategoryData, CategoryDataVariables } from '__generatedTypes__/CategoryData';

@@ -1,0 +1,1 @@
+export { AddDish } from './AddDish';

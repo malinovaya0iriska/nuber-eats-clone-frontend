@@ -1,7 +1,7 @@
 import { FC } from 'react';
 
 import { gql, useQuery } from '@apollo/client';
-import { Helmet } from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 
 import { myRestaurants } from '__generatedTypes__/myRestaurants';

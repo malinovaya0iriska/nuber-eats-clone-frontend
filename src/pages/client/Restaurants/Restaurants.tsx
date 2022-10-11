@@ -1,5 +1,5 @@
 import { gql, useQuery } from '@apollo/client';
-import { Helmet } from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 import { useForm } from 'react-hook-form';
 import { createSearchParams, Link, useNavigate } from 'react-router-dom';
 

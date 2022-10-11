@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
 import { gql, useApolloClient, useMutation } from '@apollo/client';
-import { Helmet } from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 

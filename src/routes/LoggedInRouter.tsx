@@ -13,6 +13,8 @@ import {
   Restaurant,
   MyRestaurants,
   AddRestaurant,
+  MyRestaurant,
+  AddDish,
 } from 'pages';
 import { Paths } from 'routes/constants';
 
@@ -23,7 +25,9 @@ const commonRoutes = [
 
 const restaurantRoutes = [
   { path: Paths.BaseUrl, component: <MyRestaurants /> },
+  { path: `${Paths.Restaurants}/:id`, component: <MyRestaurant /> },
   { path: Paths.AddRestaurant, component: <AddRestaurant /> },
+  { path: `${Paths.Restaurants}/:id${Paths.AddDish}`, component: <AddDish /> },
 ];
 
 const clientRoutes = [

@@ -1,7 +1,7 @@
 import { FC, useEffect } from 'react';
 
 import { gql, useLazyQuery } from '@apollo/client';
-import { Helmet } from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 import {

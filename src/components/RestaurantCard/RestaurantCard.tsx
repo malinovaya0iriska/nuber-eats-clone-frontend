@@ -3,6 +3,7 @@ import { FC } from 'react';
 import { Link } from 'react-router-dom';
 
 import { IRestaurantCardProps } from 'components/RestaurantCard/interfaces';
+import { Paths } from 'routes/constants';
 
 export const RestaurantCard: FC<IRestaurantCardProps> = ({
   id,
@@ -10,7 +11,7 @@ export const RestaurantCard: FC<IRestaurantCardProps> = ({
   name,
   categoryName,
 }) => (
-  <Link to={`/restaurants/${id}`}>
+  <Link to={`${Paths.Restaurants}/${id}`}>
     <div className="flex flex-col">
       <div
         style={{ backgroundImage: `url(${coverImage})` }}

@@ -17,4 +17,5 @@ export enum Paths {
   SearchItem = '/search',
   Category = '/category',
   AddRestaurant = '/add-restaurant',
+  AddDish = '/add-dish',
 }

@@ -1,5 +1,5 @@
 import { gql, useQuery } from '@apollo/client';
-import { Helmet } from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 import { useParams } from 'react-router-dom';
 
 import {
@@ -33,8 +33,6 @@ export const Restaurant = (): ReturnComponentType => {
       },
     },
   });
-
-  console.log(data, params.id);
 
   return (
     <>
