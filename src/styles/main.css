@@ -24,5 +24,13 @@
 }
 
 .btn {
-  @apply text-lg font-medium focus:outline-none text-white py-4  transition-colors bg-lime-600 hover:bg-lime-700;
+  @apply text-lg font-medium focus:outline-none text-white py-4  transition-colors;
+}
+
+.btn-lime {
+  @apply bg-lime-600 hover:bg-lime-700;
+}
+
+.btn-black {
+  @apply bg-black hover:bg-gray-800
 }

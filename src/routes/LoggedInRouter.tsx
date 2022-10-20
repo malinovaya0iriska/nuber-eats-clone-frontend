@@ -15,6 +15,7 @@ import {
   AddRestaurant,
   MyRestaurant,
   AddDish,
+  Order,
 } from 'pages';
 import { Paths } from 'routes/constants';
 
@@ -46,6 +47,10 @@ const clientRoutes = [
   {
     path: `${Paths.Restaurants}/:id`,
     component: <Restaurant />,
+  },
+  {
+    path: `${Paths.Order}/:id`,
+    component: <Order />,
   },
 ];
 

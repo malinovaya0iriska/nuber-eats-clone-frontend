@@ -5,6 +5,7 @@ export { ConfirmEmail } from './user/ConfirmEmail';
 export { Restaurants } from './client/Restaurants';
 export { Restaurant } from './client/Restaurant';
 export { Category } from './client/Category';
+export { Order } from './user/Order';
 export { EditProfile } from './user/EditProfile';
 export { MyRestaurants } from './owner/MyRestaurants';
 export { MyRestaurant } from './owner/MyRestaurant';

@@ -15,6 +15,7 @@ import { Dish, DishOption } from 'components';
 import { DISH_FRAGMENT, RESTAURANT_FRAGMENT } from 'fragments';
 import { CreateOrderItemInput } from 'graphql/generated/schema';
 import { IRestaurantParams } from 'pages/client/Restaurant/interfaces';
+import { Paths } from 'routes/constants';
 import { ReturnComponentType } from 'types';
 
 const RESTAURANT_QUERY = gql`
@@ -34,7 +35,6 @@ const RESTAURANT_QUERY = gql`
   ${DISH_FRAGMENT}
 `;
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const CREATE_ORDER_MUTATION = gql`
   mutation createOrder($input: CreateOrderInput!) {
     createOrder(input: $input) {
@@ -148,7 +148,7 @@ export const Restaurant = (): ReturnComponentType => {
     const { createOrder } = data;
 
     if (data.createOrder.ok) {
-      navigate(`/orders/${createOrder.orderId}`);
+      navigate(`${Paths.Order}/${createOrder.orderId}`);
     }
   };
 
@@ -161,6 +161,10 @@ export const Restaurant = (): ReturnComponentType => {
   });
 
   const triggerConfirmOrder = (): void => {
+    if (placingOrder) {
+      return;
+    }
+
     if (orderItems.length === 0) {
       alert("Can't place empty order");
 
@@ -201,7 +205,11 @@ export const Restaurant = (): ReturnComponentType => {
       </div>
       <div className="container pb-32 flex flex-col items-end mt-20">
         {!orderStarted && (
-          <button type="button" onClick={triggerStartOrder} className="btn px-10">
+          <button
+            type="button"
+            onClick={triggerStartOrder}
+            className="btn btn-lime px-10"
+          >
             Start Order
           </button>
         )}
@@ -210,22 +218,19 @@ export const Restaurant = (): ReturnComponentType => {
             <button
               type="button"
               onClick={triggerConfirmOrder}
-              className="btn px-10 mr-3"
+              className="btn btn-lime px-10 mr-3"
             >
               Confirm Order
             </button>
             <button
               type="button"
               onClick={triggerCancelOrder}
-              className="btn px-10 bg-black hover:bg-black"
+              className="px-10 btn btn-black"
             >
               Cancel Order
             </button>
           </div>
         )}
-        {/* <button type="button" onClick={triggerStartOrder} className="btn px-10">
-          {orderStarted ? 'Ordering' : 'Start Order'}
-        </button> */}
 
         <div className="w-full grid mt-16 md:grid-cols-3 gap-x-5 gap-y-10">
           {data?.restaurant.restaurant?.menu.map((dish: DishParts & { id: number }) => (

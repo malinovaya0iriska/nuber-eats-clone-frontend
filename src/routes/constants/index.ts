@@ -18,4 +18,5 @@ export enum Paths {
   Category = '/category',
   AddRestaurant = '/add-restaurant',
   AddDish = '/add-dish',
+  Order = '/order',
 }
