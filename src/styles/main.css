@@ -22,3 +22,7 @@
 .itemsList {
   @apply grid mt-16 md:grid-cols-3 gap-x-5 gap-y-10 px-4;
 }
+
+.btn {
+  @apply text-lg font-medium focus:outline-none text-white py-4  transition-colors bg-lime-600 hover:bg-lime-700;
+}

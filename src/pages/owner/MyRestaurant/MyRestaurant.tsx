@@ -12,6 +12,7 @@ import {
 } from 'victory';
 
 import { createPayment, createPaymentVariables } from '__generatedTypes__/createPayment';
+import { DishParts } from '__generatedTypes__/DishParts';
 import { myRestaurant, myRestaurantVariables } from '__generatedTypes__/myRestaurant';
 import { Dish } from 'components';
 import { DISH_FRAGMENT, ORDERS_FRAGMENT, RESTAURANT_FRAGMENT } from 'fragments';
@@ -98,7 +99,7 @@ export const MyRestaurant = (): ReturnComponentType => {
     <div className="w-full">
       <Helmet>
         <title> Restaurant | Nuber Eats</title>
-        {/* <script src="https://cdn.paddle.com/paddle/paddle.js" /> */}
+        <script src="https://cdn.paddle.com/paddle/paddle.js" />
       </Helmet>
       <div
         className="bg-gray-700  py-28 bg-center bg-cover"
@@ -129,14 +130,16 @@ export const MyRestaurant = (): ReturnComponentType => {
             <h4 className="text-xl mb-5">Please upload a dish!</h4>
           ) : (
             <div className="grid mt-16 md:grid-cols-3 gap-x-5 gap-y-10">
-              {data?.myRestaurant.restaurant?.menu.map(dish => (
-                <Dish
-                  key={dish.id}
-                  name={dish.name}
-                  description={dish.description}
-                  price={dish.price}
-                />
-              ))}
+              {data?.myRestaurant.restaurant?.menu.map(
+                (dish: DishParts & { id: number }) => (
+                  <Dish
+                    key={dish.id}
+                    name={dish.name}
+                    description={dish.description}
+                    price={dish.price}
+                  />
+                ),
+              )}
             </div>
           )}
         </div>

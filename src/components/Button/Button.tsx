@@ -2,7 +2,12 @@ import { FC } from 'react';
 
 import { IButtonProps } from 'components/Button/interfaces';
 
-export const Button: FC<IButtonProps> = ({ isLoading, isDisabled, actionText }) => {
+export const Button: FC<IButtonProps> = ({
+  isLoading,
+  isDisabled,
+  actionText,
+  onClick,
+}) => {
   return (
     <button
       type="submit"
@@ -11,6 +16,7 @@ export const Button: FC<IButtonProps> = ({ isLoading, isDisabled, actionText }) 
           ? 'bg-light-gray pointer-events-none'
           : 'bg-black  hover:bg-gray-850 active:bg-light-grey'
       }`}
+      onClick={onClick || (() => null)}
     >
       {isLoading ? 'Loading...' : actionText}
     </button>
