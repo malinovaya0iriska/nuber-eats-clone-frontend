@@ -1,6 +1,8 @@
-import { gql, useMutation, useQuery } from '@apollo/client';
+import { useEffect } from 'react';
+
+import { gql, useMutation, useQuery, useSubscription } from '@apollo/client';
 import { Helmet } from 'react-helmet-async';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import {
   VictoryAxis,
   VictoryChart,
@@ -14,8 +16,14 @@ import {
 import { createPayment, createPaymentVariables } from '__generatedTypes__/createPayment';
 import { DishParts } from '__generatedTypes__/DishParts';
 import { myRestaurant, myRestaurantVariables } from '__generatedTypes__/myRestaurant';
+import { pendingOrders } from '__generatedTypes__/pendingOrders';
 import { Dish } from 'components';
-import { DISH_FRAGMENT, ORDERS_FRAGMENT, RESTAURANT_FRAGMENT } from 'fragments';
+import {
+  DISH_FRAGMENT,
+  FULL_ORDER_FRAGMENT,
+  ORDERS_FRAGMENT,
+  RESTAURANT_FRAGMENT,
+} from 'fragments';
 import { useMe } from 'hooks';
 import { IParams } from 'pages/owner/MyRestaurant/interfaces';
 import { Paths } from 'routes/constants';
@@ -42,6 +50,15 @@ export const MY_RESTAURANT_QUERY = gql`
   ${ORDERS_FRAGMENT}
 `;
 
+const PENDING_ORDERS_SUBSCRIPTION = gql`
+  subscription pendingOrders {
+    pendingOrders {
+      ...FullOrderParts
+    }
+  }
+  ${FULL_ORDER_FRAGMENT}
+`;
+
 const CREATE_PAYMENT_MUTATION = gql`
   mutation createPayment($input: CreatePaymentInput!) {
     createPayment(input: $input) {
@@ -53,6 +70,7 @@ const CREATE_PAYMENT_MUTATION = gql`
 
 export const MyRestaurant = (): ReturnComponentType => {
   const { id } = useParams<IParams>();
+  const navigate = useNavigate();
   const { data } = useQuery<myRestaurant, myRestaurantVariables>(MY_RESTAURANT_QUERY, {
     variables: {
       input: {
@@ -88,12 +106,23 @@ export const MyRestaurant = (): ReturnComponentType => {
       alert('Your restaurant is being promoted!');
     }
   };
+
   const [createPaymentMutation] = useMutation<createPayment, createPaymentVariables>(
     CREATE_PAYMENT_MUTATION,
     {
       onCompleted,
     },
   );
+
+  const { data: subscriptionData } = useSubscription<pendingOrders>(
+    PENDING_ORDERS_SUBSCRIPTION,
+  );
+
+  useEffect(() => {
+    if (subscriptionData?.pendingOrders.id) {
+      navigate(`${Paths.Order}/${subscriptionData.pendingOrders.id}`);
+    }
+  }, [subscriptionData, navigate]);
 
   return (
     <div className="w-full">

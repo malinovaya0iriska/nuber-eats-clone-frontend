@@ -22,6 +22,10 @@ import { Paths } from 'routes/constants';
 const commonRoutes = [
   { path: Paths.ConfirmEmail, component: <ConfirmEmail /> },
   { path: Paths.EditProfile, component: <EditProfile /> },
+  {
+    path: `${Paths.Order}/:id`,
+    component: <Order />,
+  },
 ];
 
 const restaurantRoutes = [
@@ -47,10 +51,6 @@ const clientRoutes = [
   {
     path: `${Paths.Restaurants}/:id`,
     component: <Restaurant />,
-  },
-  {
-    path: `${Paths.Order}/:id`,
-    component: <Order />,
   },
 ];
 

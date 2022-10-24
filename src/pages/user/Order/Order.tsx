@@ -1,12 +1,15 @@
 import { useEffect } from 'react';
 
-import { gql, useQuery } from '@apollo/client';
+import { gql, useMutation, useQuery } from '@apollo/client';
 import { Helmet } from 'react-helmet-async';
 import { useParams } from 'react-router-dom';
 
+import { editOrder, editOrderVariables } from '__generatedTypes__/editOrder';
 import { getOrder, getOrderVariables } from '__generatedTypes__/getOrder';
 import { orderUpdates } from '__generatedTypes__/orderUpdates';
 import { FULL_ORDER_FRAGMENT } from 'fragments';
+import { OrderStatus, UserRole } from 'graphql/generated/schema';
+import { useMe } from 'hooks';
 import { IParams } from 'pages/owner/MyRestaurant/interfaces';
 import { ReturnComponentType } from 'types/ReturnComponentType';
 
@@ -32,8 +35,21 @@ const ORDER_SUBSCRIPTION = gql`
   ${FULL_ORDER_FRAGMENT}
 `;
 
+const EDIT_ORDER = gql`
+  mutation editOrder($input: EditOrderInput!) {
+    editOrder(input: $input) {
+      ok
+      error
+    }
+  }
+`;
+
 export const Order = (): ReturnComponentType => {
   const params = useParams<IParams>();
+
+  const { data: userData } = useMe();
+
+  const [editOrderMutation] = useMutation<editOrder, editOrderVariables>(EDIT_ORDER);
 
   const { data, subscribeToMore } = useQuery<getOrder, getOrderVariables>(GET_ORDER, {
     variables: {
@@ -42,6 +58,8 @@ export const Order = (): ReturnComponentType => {
       },
     },
   });
+
+  const status = data?.getOrder.order?.orderStatus;
 
   useEffect(() => {
     if (data?.getOrder.ok) {
@@ -56,8 +74,6 @@ export const Order = (): ReturnComponentType => {
           prev,
           { subscriptionData: { data } }: { subscriptionData: { data: orderUpdates } },
         ) => {
-          console.log('subscriptionData', data);
-
           if (!data) return prev;
 
           return {
@@ -71,9 +87,18 @@ export const Order = (): ReturnComponentType => {
         },
       });
     }
-  }, [data]);
+  }, [data, params.id, subscribeToMore]);
 
-  console.log(data?.getOrder);
+  const onButtonClick = (newStatus: OrderStatus): void => {
+    editOrderMutation({
+      variables: {
+        input: {
+          id: +params.id!,
+          orderStatus: newStatus,
+        },
+      },
+    });
+  };
 
   return (
     <div className="mt-32 container flex justify-center">
@@ -102,9 +127,38 @@ export const Order = (): ReturnComponentType => {
               {data?.getOrder.order?.driver?.email || 'Not yet.'}
             </span>
           </div>
-          <span className=" text-center mt-5 mb-3  text-2xl text-lime-600">
-            Status: {data?.getOrder.order?.orderStatus}
-          </span>
+          {userData?.me.role === UserRole.Client && (
+            <span className="text-center mt-5 mb-3  text-2xl text-lime-600">
+              Status: {status}
+            </span>
+          )}
+          {userData?.me.role === UserRole.Owner && (
+            <>
+              {status === OrderStatus.Pending && (
+                <button
+                  onClick={() => onButtonClick(OrderStatus.Cooking)}
+                  type="button"
+                  className="btn btn-black"
+                >
+                  Accept Order
+                </button>
+              )}
+              {status === OrderStatus.Cooking && (
+                <button
+                  onClick={() => onButtonClick(OrderStatus.Cooked)}
+                  type="button"
+                  className="btn btn-lime"
+                >
+                  Order {status}
+                </button>
+              )}
+              {status !== OrderStatus.Cooking && status !== OrderStatus.Pending && (
+                <span className=" text-center mt-5 mb-3  text-2xl text-lime-600">
+                  Status: {status}
+                </span>
+              )}
+            </>
+          )}
         </div>
       </div>
     </div>
