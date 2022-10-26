@@ -2,6 +2,7 @@ import { FC } from 'react';
 
 import { Navigate, Route, Routes } from 'react-router-dom';
 
+import { UserRole } from '__generatedTypes__/globalTypes';
 import { SearchRestaurants } from 'components';
 import { Header } from 'components/Header';
 import { useMe } from 'hooks';
@@ -16,6 +17,7 @@ import {
   MyRestaurant,
   AddDish,
   Order,
+  Dashboard,
 } from 'pages';
 import { Paths } from 'routes/constants';
 
@@ -54,6 +56,8 @@ const clientRoutes = [
   },
 ];
 
+const driverRoutes = [{ path: Paths.BaseUrl, component: <Dashboard /> }];
+
 export const LoggedInRouter: FC = () => {
   const { data, loading, error } = useMe();
 
@@ -74,13 +78,18 @@ export const LoggedInRouter: FC = () => {
           <Route key={path} path={path} element={component} />
         ))}
 
-        {data.me.role === 'Client' &&
+        {data.me.role === UserRole.Client &&
           clientRoutes.map(({ path, component }) => (
             <Route key={path} path={path} element={component} />
           ))}
 
-        {data.me.role === 'Owner' &&
+        {data.me.role === UserRole.Owner &&
           restaurantRoutes.map(({ path, component }) => (
+            <Route key={path} path={path} element={component} />
+          ))}
+
+        {data.me.role === UserRole.Delivery &&
+          driverRoutes.map(({ path, component }) => (
             <Route key={path} path={path} element={component} />
           ))}
 
